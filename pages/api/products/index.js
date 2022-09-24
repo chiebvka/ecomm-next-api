@@ -6,7 +6,11 @@ import { allRooms } from '../../../controllers/productController'
 import { getUserProfile } from '../../../controllers/authController';
 import { isAuthenticatedUser, authorizeRoles } from '../../../middlewares/auth'
 
-const handler = nc();
+
+import onError from '../../../middlewares/errors';
+
+
+const handler = nc({ onError });
 
 database();
 

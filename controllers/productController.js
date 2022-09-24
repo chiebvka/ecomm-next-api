@@ -39,12 +39,18 @@ const getProducts =  catchAsyncErrors (async (req, res, next) => {
                             .filter()
                             .pagination(resPerPage)
 
-    const products = await apiFeatures.query
+    let products = await apiFeatures.query;
+    let filteredProductsCount = products.length
+                        
+    apiFeatures.pagination(resPerPage)
+    // added a .clone() method because of mongoose v6 executing query a second time should remove if problems arise
+    products = await apiFeatures.query.clone();
 
     res.status(200).json({
         success: true,
-        count: products.length,
         productCount,
+        resPerPage,
+        filteredProductsCount,
         products
     })
 })
@@ -89,7 +95,7 @@ const updateProduct = catchAsyncErrors (async (req, res, next) => {
 
 // Deleet product => /api/v1/admin/product/:id
 const deleteProduct = catchAsyncErrors (async (req, res, next) => {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.query.id);
 
     if(!product) {
         return next(new ErrorHandler('Product not found', 404))
