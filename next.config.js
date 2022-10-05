@@ -32,5 +32,7 @@ module.exports = {
   },
   images: {
       domains: ['res.cloudinary.com'],
+      domains: ['flowbite.com'],
+      domains: ['images.pexels.com'],
   },
 }
